@@ -9,16 +9,16 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {MatInputModule} from "@angular/material/input";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatIconModule} from "@angular/material/icon";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
-import {categoryTransformPipe} from "./pipes/category-transform.pipe";
+import {CategoryTransformPipe} from "./pipes/category-transform.pipe";
 
 @NgModule({
   declarations: [
     AppComponent,
     JokeListComponent,
     JokeItemComponent,
-    categoryTransformPipe
+    CategoryTransformPipe
   ],
   imports: [
     BrowserModule,
@@ -28,7 +28,8 @@ import {categoryTransformPipe} from "./pipes/category-transform.pipe";
     MatPaginatorModule,
     MatIconModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

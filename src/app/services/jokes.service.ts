@@ -14,6 +14,6 @@ export class JokesService {
   ) { }
 
   getAll(query: string): Observable<any> {
-    return this.http.get(environment.BASIC_URL + `?query=${query}`).pipe(catchError(err => err))
+    return this.http.get(environment.BASIC_URL, { params: { query } }).pipe(catchError(err => err))
   }
 }
