@@ -1,19 +1,29 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {JokesService} from "../../services/jokes.service";
 import {Joke} from "../../interfaces/joke.interface";
-import {PageEvent} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {FormControl, Validators} from "@angular/forms";
-import {catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap, takeUntil} from "rxjs/operators";
-import {Observable, of, Subject} from "rxjs";
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged, filter,
+  map,
+  startWith,
+  switchMap,
+  takeUntil,
+  tap
+} from "rxjs/operators";
+import {merge, Observable, of, Subject} from "rxjs";
 
 @Component({
   selector: 'app-joke-list',
   templateUrl: './joke-list.component.html',
   styleUrls: ['./joke-list.component.scss']
 })
-export class JokeListComponent implements OnInit, OnDestroy {
+export class JokeListComponent implements AfterViewInit, OnDestroy {
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
-  jokes: Joke[] = [];
+  jokes$: Observable<Array<Joke>>;
   length: number;
   page: number
   pageSize = 10;
@@ -21,24 +31,17 @@ export class JokeListComponent implements OnInit, OnDestroy {
   isError: boolean = true;
   search: FormControl;
 
+  trackById = (index: number, { id }: Joke) => id;
+
   private readonly destroy$: Subject<void>;
 
-  constructor(
-    private jokeService: JokesService
-  ) {
+  constructor(private jokeService: JokesService) {
     this.search = new FormControl('', [Validators.minLength(3)]);
     this.destroy$ = new Subject<void>();
   }
 
-  ngOnInit(): void {
-    this.search.valueChanges
-      .pipe(
-        startWith(''),
-        debounceTime(500),
-        distinctUntilChanged(),
-        switchMap(() => this.getJokes()),
-        takeUntil(this.destroy$),
-      ).subscribe();
+  ngAfterViewInit(): void {
+    this.jokes$ = merge(this.Search$, this.Pagination$);
   }
 
   ngOnDestroy() {
@@ -46,14 +49,35 @@ export class JokeListComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  getPaginatedJokes(e: PageEvent) {
-    this.Jokes$.subscribe(data => {
-      this.pageSize = e.pageSize
-      this.page = e.pageIndex;
-      const start = this.page * this.pageSize;
-      const end = start + this.pageSize;
-      this.jokes = data.result.slice(start, end)
-    })
+  private get Search$() {
+    return this.search.valueChanges
+      .pipe(
+        startWith(''),
+        debounceTime(500),
+        distinctUntilChanged(),
+        filter(() => this.search.valid),
+        switchMap(() => this.getJokes()),
+        takeUntil(this.destroy$)
+      );
+  }
+
+  private get Pagination$() {
+    return this.paginator.page
+      .pipe(
+        switchMap((page: PageEvent) =>
+          this.Jokes$
+            .pipe(
+              map(data => {
+                this.pageSize = page.pageSize
+                this.page = page.pageIndex;
+                const start = this.page * this.pageSize;
+                const end = start + this.pageSize;
+                return data.result.slice(start, end);
+              })
+            )
+        ),
+        takeUntil(this.destroy$)
+      );
   }
 
   private getJokes(): Observable<any> {
@@ -65,7 +89,7 @@ export class JokeListComponent implements OnInit, OnDestroy {
           } else {
             this.isError = false;
             this.length = data.result.length;
-            return this.jokes = data.result.slice(0, this.pageSize);
+            return data.result.slice(0, this.pageSize);
           }
         }),
         catchError(() => {

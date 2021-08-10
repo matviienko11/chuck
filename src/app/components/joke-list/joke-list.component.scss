@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  overflow-wrap: break-word;
 }
 
 ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex{

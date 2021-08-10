@@ -2,23 +2,22 @@
   <mat-form-field class="search_input" appearance="fill">
     <mat-label>Search jokes...</mat-label>
     <input matInput type="text" minlength="3" [formControl]="search">
-    <mat-error *ngIf="search.invalid">
+    <mat-error [hidden]="search.valid">
       Al least <strong>3 symbols</strong>
     </mat-error>
   </mat-form-field>
 
-  <div *ngIf="isError; else data">
+  <div [hidden]="isError === false">
     No jokes to display, please search for awesome jokes
   </div>
-  <ng-template #data>
+  <div [hidden]="isError">
     <div class="jokes_card_wrapper" >
-      <app-joke-item *ngFor="let joke of jokes" [joke]="joke"></app-joke-item>
+      <app-joke-item *ngFor="let joke of jokes$ | async;  trackBy: trackById" [joke]="joke"></app-joke-item>
     </div>
     <mat-paginator [length]="length"
                    [pageSize]="pageSize"
                    [pageSizeOptions]="pageSizeOptions"
-                   (page)="getPaginatedJokes($event)"
                    aria-label="Select page">
     </mat-paginator>
-  </ng-template>
+  </div>
 </div>
