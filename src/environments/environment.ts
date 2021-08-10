@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  BASIC_URL:'https://api.chucknorris.io/jokes/search?query='
+  BASIC_URL:'https://api.chucknorris.io/jokes/search'
 };
 
 /*

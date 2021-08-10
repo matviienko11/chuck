@@ -1,17 +1,26 @@
 <div class="jokes_list_wrapper">
-    <mat-form-field class="search_input" appearance="fill">
-      <mat-label>Search jokes...</mat-label>
-      <input matInput type="text" [(ngModel)]="inputValue" (change)="handleSearch()">
-    </mat-form-field>
+  <mat-form-field class="search_input" appearance="fill">
+    <mat-label>Search jokes...</mat-label>
+    <input matInput type="text" minlength="3" #inputError="ngModel" [(ngModel)]="inputValue" (change)="handleSearch()">
+    <mat-error *ngIf="inputError.hasError">
+      Al least <strong>3 symbols</strong>
+    </mat-error>
+  </mat-form-field>
 
 
-  <div class="jokes_card_wrapper">
-    <app-joke-item *ngFor="let joke of jokes" [joke]="joke"></app-joke-item>
+  <div *ngIf="!isError; else error">
+    <div class="jokes_card_wrapper" >
+      <app-joke-item *ngFor="let joke of jokes" [joke]="joke"></app-joke-item>
+    </div>
+    <mat-paginator [length]="length"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   (page)="pageEvent = getPaginatedJokes($event)"
+                   aria-label="Select page">
+    </mat-paginator>
   </div>
-  <mat-paginator [length]="length"
-                 [pageSize]="pageSize"
-                 [pageSizeOptions]="pageSizeOptions"
-                 (page)="pageEvent = getPaginatedJokes($event)"
-                 aria-label="Select page">
-  </mat-paginator>
+
+
+
+  <ng-template #error>No jokes to display, please search for awesome jokes</ng-template>
 </div>
