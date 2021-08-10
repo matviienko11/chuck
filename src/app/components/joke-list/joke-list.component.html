@@ -1,3 +1,9 @@
 <div class="jokes_wrapper">
   <app-joke-item *ngFor="let joke of jokes" [joke]="joke"></app-joke-item>
+  <mat-paginator [length]="length"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="pageSizeOptions"
+                 (page)="pageEvent = getAllJokes($event)"
+                 aria-label="Select page">
+  </mat-paginator>
 </div>
