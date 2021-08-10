@@ -11,12 +11,14 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatIconModule} from "@angular/material/icon";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
+import {categoryTransformPipe} from "./pipes/category-transform.pipe";
 
 @NgModule({
   declarations: [
     AppComponent,
     JokeListComponent,
     JokeItemComponent,
+    categoryTransformPipe
   ],
   imports: [
     BrowserModule,
