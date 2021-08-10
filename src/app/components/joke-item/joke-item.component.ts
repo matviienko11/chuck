@@ -15,8 +15,4 @@ export class JokeItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  handle(joke: any) {
-    console.log(joke)
-  }
-
 }

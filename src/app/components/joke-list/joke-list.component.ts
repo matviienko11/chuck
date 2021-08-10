@@ -38,7 +38,6 @@ export class JokeListComponent implements OnInit {
 
   getPaginatedJokes(e: PageEvent) {
     this.jokeService.getAll(this.inputValue).subscribe(data => {
-      console.log(data);
       this.pageSize = e.pageSize
       this.page = e.pageIndex;
       const start = this.page * this.pageSize;
@@ -50,7 +49,6 @@ export class JokeListComponent implements OnInit {
 
   handleSearch() {
     this.jokeService.getAll(this.inputValue).subscribe(data => {
-      console.log(data);
       if (data.result.length === 0) {
         this.isError = true
       } else {
