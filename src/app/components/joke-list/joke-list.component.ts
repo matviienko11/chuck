@@ -11,8 +11,10 @@ import {PageEvent} from "@angular/material/paginator";
 export class JokeListComponent implements OnInit {
 
   jokes: Joke[] = [];
+  inputValue: string;
   pageEvent: PageEvent;
   length: number;
+  page: number
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 25, 100];
 
@@ -21,20 +23,40 @@ export class JokeListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getAllJokes();
+  }
+
+  getAllJokes() {
     this.jokeService.getAll().subscribe(data => {
       this.jokes = data.result.slice(0, this.pageSize)
       this.length = data.result.length
     });
   }
 
-  getAllJokes(e: PageEvent) {
-    this.jokeService.getAll().subscribe(data => {
-      const page = e.pageIndex;
-      const start = page * this.pageSize;
-      const end = start + this.pageSize;
-      this.jokes = data.result.slice(start, end)
-    })
+  getPaginatedJokes(e: PageEvent) {
+    console.log(e)
+    if(this.inputValue === '') {
+      this.getAllJokes()
+    } else {
+      this.jokeService.getAll(this.inputValue).subscribe(data => {
+        this.pageSize = e.pageSize
+        this.page = e.pageIndex;
+        const start = this.page * this.pageSize;
+        const end = start + this.pageSize;
+        this.jokes = data.result.slice(start, end)
+      })
+    }
     return this.pageEvent;
   }
 
+  handleSearch() {
+    if(this.inputValue === '') {
+      this.getAllJokes()
+    } else {
+      this.jokeService.getAll(this.inputValue).subscribe(data => {
+        this.jokes = data.result.slice(0, this.pageSize)
+        this.length = data.result.length
+      })
+    }
+  }
 }

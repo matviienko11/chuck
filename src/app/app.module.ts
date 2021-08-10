@@ -8,6 +8,9 @@ import { JokeItemComponent } from './components/joke-item/joke-item.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {MatInputModule} from "@angular/material/input";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatIconModule} from "@angular/material/icon";
+import {FormsModule} from "@angular/forms";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     HttpClientModule,
     NoopAnimationsModule,
     MatInputModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatIconModule,
+    FormsModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

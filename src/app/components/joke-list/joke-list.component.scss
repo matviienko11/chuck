@@ -1,6 +1,12 @@
 .jokes_list_wrapper {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.search_input {
+  width: 200px;
 }
 .jokes_card_wrapper {
   display: flex;
