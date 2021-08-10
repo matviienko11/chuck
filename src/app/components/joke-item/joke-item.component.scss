@@ -1,7 +1,9 @@
 .joke_card {
   margin: 20px;
+  padding: 10px;
   width: 400px;
   display: flex;
   flex-direction: column;
-  box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);;
+  box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
+  border: 1px solid grey;
 }

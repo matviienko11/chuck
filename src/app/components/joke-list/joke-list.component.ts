@@ -34,7 +34,6 @@ export class JokeListComponent implements OnInit {
   }
 
   getPaginatedJokes(e: PageEvent) {
-    console.log(e)
     if(this.inputValue === '') {
       this.getAllJokes()
     } else {
