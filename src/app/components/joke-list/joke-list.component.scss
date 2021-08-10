@@ -1,4 +1,8 @@
-.jokes_wrapper {
+.jokes_list_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.jokes_card_wrapper {
   display: flex;
   flex-wrap: wrap;
 }

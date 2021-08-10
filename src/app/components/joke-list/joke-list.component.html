@@ -1,5 +1,7 @@
-<div class="jokes_wrapper">
-  <app-joke-item *ngFor="let joke of jokes" [joke]="joke"></app-joke-item>
+<div class="jokes_list_wrapper">
+  <div class="jokes_card_wrapper">
+    <app-joke-item *ngFor="let joke of jokes" [joke]="joke"></app-joke-item>
+  </div>
   <mat-paginator [length]="length"
                  [pageSize]="pageSize"
                  [pageSizeOptions]="pageSizeOptions"
